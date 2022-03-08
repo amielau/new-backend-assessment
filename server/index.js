@@ -1,16 +1,14 @@
 // ignore
 const express = require("express");
 const cors = require("cors");
-const res = require("express/lib/response");
 
 const app = express();
 
 app.use(cors());
 
-app.use(express.json()); // When we want to be able to accept JSON.
-//ignore
+app.use(express.json()); 
 
-
+const users = []
 
 //compliments
 app.get("/api/compliment", (req, res) => {
@@ -19,8 +17,7 @@ app.get("/api/compliment", (req, res) => {
   "Your Javascript skills are stellar.",
   
 ];
-let globalId = compliments.length;
-
+ 
 // choose random compliment
 let randomIndex = Math.floor(Math.random() * compliments.length);
 let randomCompliment = compliments[randomIndex];
@@ -29,53 +26,47 @@ let randomCompliment = compliments[randomIndex];
 res.status(200).send(randomCompliment);
 
 
-//user creates compliment
-app.post("/api/compliment/", (req, res) => {
-   let newCompliment = req.body;
-
-  newCompliment.id = globalId
-
-  newCompliment.push(compliments);
-
-  res.status(200).send(compliments)
-  
 })
-  // ? was in the demo
-
-  app.post('/api/compliment/', createCompliment);
-  app.put('/api/compliment/:id', changeCompliment);
-  app.delete('/api/compliment:id', deleteCompliment);
-  
-});
 //fortunes
 app.get("/api/fortune", (req, res) => {
   const fortunes = ["you are going to ace this test", 
-     "you are going to have a birthday soon", 
+     "you are going to have a birthday within the year", 
       "you will become the world's greatest coder.",
       "you will eat lunch at around 1 pm Monday-Friday",
-      "you will have a great day",]
+      "you will have a great day"];
       
       //choose a random fortune
-      let randomI = Math.floor(Math.random() * fortunes.length);
-      let randomFortune = fortunes[randomI];
+      let randomIndex = Math.floor(Math.random() * fortunes.length);
+      let randomFortune = fortunes[randomIndex];
+
       res.status(200).send(randomFortune);
 
+    });
+
+    app.post("/api/name", (req, res) => {
+      const {newName} = req.body
+
+      users.push(newName);
+      res.status(200).send(users);
+    });
+
+    app.delete("/api/delete/:id", (req, res) => {
+        console.log(req.params);
+
+        if(+req.params.id) {
+          users.splice(req.params.id, 1);
+          res.status(200).send(users);
+        } else {
+          res.status(400).send("that is not a number");
+        }
+        
+    });
+    app.put("/api/edit/:id", (req, res) => {
+      console.log(req.params)
+      console.log(req.body)
     })
-// user creates fortune
-app.post("/api/fortune/", (req, res) => {
-   let newFortune = req.body;
 
-  newFortune.id = globalId
+app.listen(4000, () => console.log("Server running on 4000"))
 
-  newFortune.push(fortunes);
-
-  res.status(200).send(fortunes)
-  
-})
-// user updates fortune
-app.put("/api/fortune/", (req, res) => {
-  
-})
-
-
-app.listen(4000, () => console.log("Server running on 4000"));
+// what do req. body, query, params DO?
+// what is typecasting to an int? 1:25:00
