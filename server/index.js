@@ -53,7 +53,7 @@ app.get("/api/fortune", (req, res) => {
     app.delete("/api/delete/:id", (req, res) => {
         console.log(req.params);
 
-        if(+req.params.id) {
+        if(req.params.id) {
           users.splice(req.params.id, 1);
           res.status(200).send(users);
         } else {
@@ -62,6 +62,13 @@ app.get("/api/fortune", (req, res) => {
         
     });
     app.put("/api/edit/:id", (req, res) => {
+      
+      let editId = req.params.id;
+      let preChange = users[editId];
+      users[editId] = req.body.nameChange;
+
+      res.status(200).send(`you have updated ${preChange} to ${users[editId]}`)
+
       console.log(req.params)
       console.log(req.body)
     })

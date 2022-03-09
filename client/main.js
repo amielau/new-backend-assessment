@@ -16,7 +16,7 @@ document.getElementById("complimentButton").onclick = function () {
   const indexInput = document.getElementById("indexInput");
   const form = document.querySelector("form");
   const newNameInput = document.getElementById("newNameInput");
-  const newNameIndex = document.getElementById("newInputIndex")
+  const newNameIndex = document.getElementById("newNameIndex")
   const submitForm = document.getElementById('submitForm')
 
   function getFortune() {
@@ -41,6 +41,7 @@ document.getElementById("complimentButton").onclick = function () {
           alert(`you just registered ${name}`)
 
           nameInput.value = ``;
+          console.log(res.data)
       })
   }
 
@@ -50,6 +51,7 @@ document.getElementById("complimentButton").onclick = function () {
       axios.delete(`http://localhost:4000/api/delete/${newIndex}`)
         .then((res) => {
             alert("you have deleted a user")
+            console.log(res.data)
         })
 
         .catch((err) => {
@@ -63,18 +65,18 @@ document.getElementById("complimentButton").onclick = function () {
 
       const body = {
           nameChange
-      }
-  };
-
-  axios.put(`http://localhost:4000/api/edit/${indexChange}`, body)
-  .then((res)=> {
-
-  })
+        }
+          
+          axios.put(`http://localhost:4000/api/edit/${indexChange}`, body)
+          .then((res)=> {
+              alert(res.data);
+        })
+    };
 
   fortuneBtn.addEventListener('click', getFortune);
   nameBtn.addEventListener('click', createName);
   indexBtn.addEventListener('click', deleteName);
-  submitForm.addEventListener("click", editName)
+  submitForm.addEventListener('click', editName)
 
 
 
